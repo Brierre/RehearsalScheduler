@@ -1,0 +1,10 @@
+package com.msaunthaigh.rehearsalscheduler.service;
+
+import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
+import com.msaunthaigh.rehearsalscheduler.entity.Part;
+
+public interface PartService {
+
+	Part fetchPart(Integer partId, Integer castId, String characterName, String characterGroup);
+
+}

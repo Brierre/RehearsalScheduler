@@ -1,0 +1,37 @@
+package com.msaunthaigh.rehearsalscheduler.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.msaunthaigh.rehearsalscheduler.entity.Scene;
+import com.msaunthaigh.rehearsalscheduler.service.SceneService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@Slf4j
+public class DefaultSceneController implements SceneController {
+	@Autowired
+	private SceneService sceneService;
+	
+	//GET operation, read/retrieve scenes
+	@Override
+	public List<Scene> fetchScenes(String musicalName, String sceneName, String songTitle, String firstName, String lastName, String characterName) {
+		log.info("musicalName={}, sceneName={}, songTitle={}, firstName={}, lastName={}, characterName={}", 
+				musicalName, sceneName, songTitle, firstName, lastName, characterName);
+		return sceneService.fetchScenes(musicalName, sceneName, songTitle, firstName, lastName, characterName);
+	}
+
+	//POST operation, add scenes
+	@Override
+	public Optional<Scene> addNewScene(String musicalName, String sceneName, String songTitle, Integer songId, String act, String location, 
+			Integer pageBegin, Integer pageEnd) {
+		log.info("Added scene: musicalName={}, sceneName={}, songTitle={}, songId={}, act={}, location={}, pageBegin={}, pageEnd={}", 
+				musicalName, sceneName, songTitle, songId, act, location, pageBegin, pageEnd);
+		return sceneService.addNewScene(musicalName, sceneName, songTitle, songId, act, location, pageBegin, pageEnd);
+	}
+
+}

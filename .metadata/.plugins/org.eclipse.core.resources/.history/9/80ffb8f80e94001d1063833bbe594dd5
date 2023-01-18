@@ -1,0 +1,39 @@
+package com.msaunthaigh.rehearsalscheduler.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
+
+public interface CastMemberService {
+	
+/**
+ * 
+ * @param castMemberPK
+ * @param firstName
+ * @param lastName
+ * @return
+ */
+
+List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName, String characterName);
+
+/**
+ * 
+ * @param firstName
+ * @param lastName
+ * @param characterName
+ * @param phoneNumber
+ * @param tapPerformer
+ * @param costumeComplete
+ * @return
+ */
+Optional<CastMember> newCastMember(String firstName, String lastName, String characterName, String phoneNumber,
+	Boolean tapPerformer, Boolean costumeComplete);
+
+Optional<CastMember> updateCastMember(String firstName, String lastName, String characterName, String newFirstName, String newLastName, String newCharacterName,
+		String phoneNumber, Boolean tapPerformer, Boolean costumeComplete);
+	
+Optional<CastMember> deleteCastMember(String firstName, String lastName);
+
+	
+}

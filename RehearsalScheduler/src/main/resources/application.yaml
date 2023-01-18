@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    password: rehearsaldb
+    username: rehearsaldb
+    url: jdbc:mysql://localhost:3306/rehearsaldb
+
+logging:
+  level:
+    root: warn
+    '[com.msaunthaigh]': debug'

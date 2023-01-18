@@ -1,0 +1,188 @@
+package com.msaunthaigh.rehearsalscheduler.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
+
+import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+public class DefaultCastMemberDao implements CastMemberDao {
+
+	@Autowired
+	private NamedParameterJdbcTemplate jdbcTemplate;
+	
+	
+	@Override
+	public List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName) {
+		log.info("DAO: castMemberPK={}, firstName={}, lastName={}", castMemberPK, firstName, lastName);
+		
+		// @formatter:off
+		String sql = ""
+				+ "SELECT * "
+				+ "FROM castmember "
+				+ "WHERE castmember_id = :castmember_id OR first_name = :first_name OR last_name = :last_name";
+		// @formatter:on
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("castmember_id", castMemberPK);
+		params.put("first_name", firstName);
+		params.put("last_name", lastName);
+		
+		return jdbcTemplate.query(sql, params, new RowMapper<>() {
+			@Override
+			public CastMember mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// @formatter:off
+				return CastMember.builder()
+						.castMemberPK(rs.getInt("castmember_id"))
+						.firstName(new String(rs.getString("first_name")))
+						.lastName(new String(rs.getString("last_name")))
+						.build();
+				// formatter:on
+			}
+		});
+	}
+
+	//intended for use with fetchCastByMusical, possibly fetchCastByScene
+//	@Override
+//	public List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName, String characterName) {
+//		log.info("DAO: castMemberPK={}, firstName={}, lastName={}, characterName={}", castMemberPK, firstName, lastName, characterName);
+//		
+//		// @formatter:off
+//		String sql = ""
+//				+ "SELECT * "
+//				+ "FROM castmember "
+//				+ "WHERE castmember_id = :castmember_id OR (first_name = :first_name AND last_name = :last_name) OR character_name = :character_name";
+//		// @formatter:on
+//		
+//		Map<String, Object> params = new HashMap<>();
+//		params.put("castmember_id", castMemberPK);
+//		params.put("first_name", firstName);
+//		params.put("last_name", lastName);
+//		params.put("character_name", characterName);
+//		
+//		return jdbcTemplate.query(sql, params, new RowMapper<>() {
+//			@Override
+//			public CastMember mapRow(ResultSet rs, int rowNum) throws SQLException {
+//				// @formatter:off
+//				return CastMember.builder()
+//						.castMemberPK(rs.getInt("castmember_id"))
+//						.firstName(new String(rs.getString("first_name")))
+//						.lastName(new String(rs.getString("last_name")))
+//						.characterName(new String(rs.getString("character_name")))
+//						.build();
+//				// formatter:on
+//			}
+//		});
+//	}
+
+	
+	@Override
+	public Optional<CastMember> newCastMember(String firstName, String lastName, String phoneNumber,
+			Boolean tapPerformer, Boolean costumeComplete) {
+		log.info("DAO: firstName={}, lastName={}, phoneNumber={}, tapPerformer={}, costumeComplete={}", firstName, lastName, characterName, phoneNumber, tapPerformer, costumeComplete);
+		
+		// @formatter:off
+		String sql = ""
+				+ "INSERT INTO castmember ("
+				+ "first_name, last_name, phone_number, tap_performer, costume_complete"
+				+ ") VALUES ("
+				+ ":first_name, :last_name, :phone_number, :tap_performer, :costume_complete)";
+		// @formatter:on
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("first_name", firstName);
+		params.put("last_name", lastName);
+		params.put("phone_number", phoneNumber);
+		params.put("tap_performer", tapPerformer);
+		params.put("costume_complete", costumeComplete);
+		
+		jdbcTemplate.update(sql, params);
+		return Optional.ofNullable(CastMember.builder()
+			// @formatter:off
+			.firstName(firstName)
+			.lastName(lastName)
+			.phoneNumber(phoneNumber)
+			.tapPerformer(tapPerformer)
+			.costumeComplete(costumeComplete)
+			.build());
+			// @formatter:on
+		}
+	
+
+	@Override
+	public Optional<CastMember> updateCastMember(String firstName, String lastName, String newFirstName, String newLastName,
+			String phoneNumber, Boolean tapPerformer, Boolean costumeComplete) {
+		log.info("DAO: firstName={}, lastName={} updated to: newFirstName={}, newLastName={}, phoneNumber={}, tapPerformer={}, costumeComplete={}", 
+				firstName, lastName, newFirstName, newLastName, phoneNumber, tapPerformer, costumeComplete);
+		
+		// @formatter:off
+		String sql = ""
+				+ "UPDATE castmember "
+				+ "SET new_first_name = :new_first_name, new_last_name = :new_last_name, first_name = :new_first_name, "
+				+ "last_name = :new_last_name, phone_number = :phone_number, tap_performer = :tap_performer, costume_complete = :costume_complete "
+				+ "WHERE (first_name = :first_name AND "
+				+ "last_name = :last_name)";
+		// @formatter:on
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("new_first_name", newFirstName);
+		params.put("new_last_name", newLastName);
+		params.put("first_name", newFirstName);
+		params.put("last_name", newLastName);
+		params.put("phone_number", phoneNumber);
+		params.put("tap_performer", tapPerformer);
+		params.put("costume_complete", costumeComplete);
+		
+		jdbcTemplate.update(sql, params);
+		return Optional.ofNullable(CastMember.builder()
+			// @formatter:off
+			.firstName(newFirstName)
+			.lastName(newLastName)
+			.phoneNumber(phoneNumber)
+			.tapPerformer(tapPerformer)
+			.costumeComplete(costumeComplete)
+			.build());
+			// @formatter:on
+	}
+//How to NOT overwrite information with null values not updated?
+	
+
+	@Override
+	public Optional<CastMember> deleteCastMember(String firstName, String lastName) {
+		//@ formatter:off
+		String sql = ""
+			+ "DELETE FROM castmember "
+			+ "WHERE first_name = :first_name AND "
+			+ "last_name = :last_name";
+		// @formatter:on
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("first_name", firstName);
+		params.put("last_name", lastName);
+	
+		jdbcTemplate.update(sql, params);
+		return Optional.ofNullable(CastMember
+			// @formatter:off
+			.builder()
+			.firstName(firstName)
+			.lastName(lastName)
+			.build());
+			// @formatter:on
+	}
+	
+	
+}
+
+

@@ -1,0 +1,181 @@
+package com.msaunthaigh.rehearsalscheduler.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
+import com.msaunthaigh.rehearsalscheduler.entity.Scene;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.servers.Server;
+
+@Validated
+@RequestMapping("/Scene")
+@OpenAPIDefinition(info = @Info(title = "Rehearsal Scheduler"), servers = {
+	@Server(url = "http://localhost:8080", description = "Local server")})
+
+public interface SceneController {
+	//This section assumes we are working with only one set of musical data (e.g. 'Nunsense' scenes, parts, and cast members)
+
+	// @formatter:off
+	@Operation(
+		summary = "Returns a list of scenes",
+		description = "Returns a list of scenes given a musical name",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "A list of scenes is returned.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = Scene.class))),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Invalid request parameters",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "404",
+				description = "No scenes were found using the supplied criteria.",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "500",
+				description = "An unplanned error has occurred.",
+				content = @Content(
+					mediaType = "application/json"))
+		},
+		
+		parameters = {
+			@Parameter(
+				name = "musicalName",
+				allowEmptyValue = false,
+				required = false,
+				description = "Name of Musical"),
+//			@Parameter(
+//				name = "sceneName",
+//				allowEmptyValue = false,
+//				required = false,
+//				description = "Name of Scene"),
+			@Parameter(
+				name = "songTitle",
+				allowEmptyValue = false,
+				required = false,
+				description = "Song Title")})
+	//GET
+	@GetMapping
+	@ResponseStatus(code = HttpStatus.OK)
+	List<Scene> fetchScenesByMusical(
+		@RequestParam(required = false)
+		String musicalName,
+		@RequestParam(required = false)
+		String sceneName,
+		@RequestParam(required = false)
+		String songTitle);
+
+	@Operation(
+			summary = "Adds a scene",
+			description = "Creates a new scene",
+			responses = {
+				@ApiResponse(
+					responseCode = "200",
+						description = "New scene created",
+						content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = CastMember.class))),
+				@ApiResponse(
+					responseCode = "400",
+					description = "Invalid request parameters",
+					content = @Content(
+						mediaType = "application/json")),
+				@ApiResponse(
+					responseCode = "404",
+					description = "Unable to create new scene with the information given",
+					content = @Content(
+						mediaType = "application/json")),
+				@ApiResponse(
+					responseCode = "500",
+					description = "An unplanned error has occurred.",
+					content = @Content(
+						mediaType = "application/json"))
+			},
+
+			parameters = {
+				@Parameter(
+					name = "musicalName",
+					allowEmptyValue = false,
+					required = true,
+					description = "Name of Musical"),
+				@Parameter(
+					name = "sceneName",
+					allowEmptyValue = true,
+					required = false,
+					description = "Name of Scene"),
+				@Parameter(
+					name = "songTitle",
+					allowEmptyValue = true,
+					required = false,
+					description = "Name of Song"),
+				@Parameter(
+					name = "songId",
+					allowEmptyValue = true,
+					required = false,
+					description = "Song Number"),
+				@Parameter(
+					name = "act",
+					allowEmptyValue = true,
+					required = false,
+					description = "Act (I or II)"),
+				@Parameter(
+					name = "location",
+					allowEmptyValue = true,
+					required = false,
+					description = "Scene Location (e.g. 'at the restaurant'"),
+				@Parameter(
+					name = "pageBegin",
+					allowEmptyValue = true,
+					required = false,
+					description = "Page Scene Begins"),
+				@Parameter(
+					name = "pageEnd",
+					allowEmptyValue = true,
+					required = false,
+					description = "Page Scene Ends")
+			}
+		)
+	//POST
+		@PostMapping
+		@ResponseStatus(code = HttpStatus.CREATED)
+		Optional<Scene> addNewScene(
+			@RequestParam(required = true)
+			String musicalName,
+			@RequestParam(required = false)
+			String sceneName,
+			@RequestParam(required = false)
+			String songTitle,
+			@RequestParam(required = false)
+			Integer songId,
+			@RequestParam(required = false)
+			String act,
+			@RequestParam(required = false)
+			String location,
+			@RequestParam(required = false)
+			Integer pageBegin,
+			@RequestParam(required = false)
+			Integer pageEnd);
+		// @formatter:off
+
+}
