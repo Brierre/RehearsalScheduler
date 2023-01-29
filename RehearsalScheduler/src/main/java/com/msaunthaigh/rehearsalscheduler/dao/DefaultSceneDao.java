@@ -65,22 +65,20 @@ public class DefaultSceneDao implements SceneDao {
 	@Override
 	public List<Scene> fetchScenesByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
 		
-		//scenePart.populateFKFromCastmember(); //fill in that castIdFK from null to a value
-		
 		log.info("DAO: castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
 		
 		// @formatter:off
 		String sql = ""
-				+ "SELECT scene.musical_name, scene.scene_number, scene.scene_name, scene.song_title, scene.song_id, scene.act, scene.location, "
-				+ "scene.script_page_begin, scene.script_page_end, castmember.first_name, castmember.last_name, part.character_name "
+				+ "SELECT DISTINCT scene.scene_number, part.character_name, castmember.castmember_id, castmember.first_name, "
+				+ "castmember.last_name, scene.musical_name, scene.scene_name, scene.song_title, scene.song_id, scene.act, "
+				+ "scene.location, scene.script_page_begin, scene.script_page_end "
 				+ "FROM scene "
 				
-				+ "JOIN part "
-				+ "ON part.musical_name = scene.musical_name "
-				
-				+ "INNER JOIN castmember "
-				+ "ON part.castmember_id = castmember.castmember_id "
-				+ "OR part.castmember_id IS NULL "
+				+ "JOIN scene_part ON scene_part.scene_number = scene.scene_number "
+				+ "AND scene_part.musical_name = scene.musical_name "
+				+ "JOIN part ON scene_part.part_number = part.part_number "
+				+ "AND scene_part.musical_name = part.musical_name "
+				+ "JOIN castmember ON part.castmember_id = castmember.castmember_id "
 
 				+ "WHERE castmember.castmember_id = :castmember_id "
 				+ "OR (castmember.first_name = :first_name AND castmember.last_name = :last_name)";
@@ -118,30 +116,23 @@ public class DefaultSceneDao implements SceneDao {
 	
 	//GET retrieve scenes
 	@Override
-	public List<Scene> fetchScenesByPart(String characterName) {
+	public List<Scene> fetchScenesByPart(String characterName, String musicalName) {
 		
-		//scenePart.populateFKFromCastmember(); //fill in that castIdFK from null to a value
-		
-		log.info("DAO: characterName={}", characterName);
+		log.info("DAO: characterName={}, musicalName={}", characterName, musicalName);
 		
 		// @formatter:off
 		String sql = ""
-				+ "SELECT scene.musical_name, scene.scene_number, scene.scene_name, scene.song_title, scene.song_id, scene.act, scene.location, "
-				+ "scene.script_page_begin, scene.script_page_end, castmember.first_name, castmember.last_name, part.character_name "
+				+ "SELECT DISTINCT scene.scene_number, part.character_name, castmember.castmember_id, castmember.first_name, castmember.last_name, scene.musical_name, scene.scene_name, scene.song_title, scene.song_id, scene.act, scene.location, scene.script_page_begin, scene.script_page_end "
 				+ "FROM scene "
-				
-				+ "JOIN part "
-				+ "ON part.musical_name = scene.musical_name "
-				
-				+ "JOIN castmember "
-				+ "ON castmember.castmember_id = part.castmember_id "
-
-				+ "WHERE part.character_name = :character_name";
-		
+				+ "JOIN scene_part ON scene_part.scene_number = scene.scene_number "
+				+ "JOIN part ON scene_part.part_number = part.part_number "
+				+ "JOIN castmember ON part.castmember_id = castmember.castmember_id "
+				+ "WHERE part.character_name = :character_name AND scene.musical_name = :musical_name";
 		// @formatter:on
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put("character_name", characterName);
+		params.put("musical_name", musicalName);
 		
 		return jdbcTemplate.query(sql, params, new RowMapper<>() {
 			@Override
