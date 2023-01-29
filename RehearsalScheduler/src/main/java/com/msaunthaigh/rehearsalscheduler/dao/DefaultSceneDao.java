@@ -122,10 +122,13 @@ public class DefaultSceneDao implements SceneDao {
 		
 		// @formatter:off
 		String sql = ""
-				+ "SELECT DISTINCT scene.scene_number, part.character_name, castmember.castmember_id, castmember.first_name, castmember.last_name, scene.musical_name, scene.scene_name, scene.song_title, scene.song_id, scene.act, scene.location, scene.script_page_begin, scene.script_page_end "
+				+ "SELECT DISTINCT scene.scene_number, part.character_name, castmember.castmember_id, "
+				+ "castmember.first_name, castmember.last_name, scene.musical_name, scene.scene_name, "
+				+ "scene.song_title, scene.song_id, scene.act, scene.location, scene.script_page_begin, "
+				+ "scene.script_page_end "
 				+ "FROM scene "
 				+ "JOIN scene_part ON scene_part.scene_number = scene.scene_number "
-				+ "JOIN part ON scene_part.part_number = part.part_number "
+				+ "JOIN part ON scene_part.part_number = part.part_number AND scene_part.musical_name = part.musical_name "
 				+ "JOIN castmember ON part.castmember_id = castmember.castmember_id "
 				+ "WHERE part.character_name = :character_name AND scene.musical_name = :musical_name";
 		// @formatter:on
