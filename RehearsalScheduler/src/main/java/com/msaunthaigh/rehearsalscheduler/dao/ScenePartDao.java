@@ -6,14 +6,18 @@ import java.util.Optional;
 import com.msaunthaigh.rehearsalscheduler.entity.ScenePart;
 
 public interface ScenePartDao {
-/**
- * 
- * @param sceneId
- * @return
- */
-	List<ScenePart> fetchPartsByScene(Integer sceneIdFK, Integer partIdFK, String firstName, String lastName, String characterName, String musicalName);
+	
+	/**
+	 * 
+	 * @param sceneNumber
+	 * @param partNumber
+	 * @param musicalName
+	 * @return
+	 */
+	
+	Optional<ScenePart> enterScenePartInfo(Integer sceneNumber, Integer partNumber, String musicalName);
 
-	public Optional<ScenePart> populateFKFromCastmember(Integer sceneIdFK, Integer partIdfk, Integer castId);
-
-
+	
+	//not needed after database refactor, saved in case I want to go back to the old format
+//	public Optional<ScenePart> populateFK(Integer sceneNumber);
 }

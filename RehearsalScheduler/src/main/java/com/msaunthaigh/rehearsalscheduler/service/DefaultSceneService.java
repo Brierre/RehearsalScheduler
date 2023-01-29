@@ -20,13 +20,29 @@ public class DefaultSceneService implements SceneService {
 	
 	@Transactional	
 	@Override
-	public List<Scene> fetchScenes(String musicalName, Integer sceneNumber, String sceneName, String songTitle, String firstName, String lastName, String characterName) {
-		log.info("fetchScenes has been called for musicalName={}, sceneNumber={}, sceneName={}, songTitle={}, firstName={}, lastName={}, characterName={}", 
-			musicalName, sceneNumber, sceneName, songTitle, firstName, lastName, characterName);
+	public List<Scene> fetchScenesByMusical(String musicalName) {
+		log.info("fetchScenesByMusical has been called for musicalName={}", musicalName);
 		
-		return sceneDao.fetchScenes(musicalName, sceneNumber, sceneName, songTitle, firstName, lastName, characterName);
+		return sceneDao.fetchScenesByMusical(musicalName);
 	
 	}
+	
+	@Override
+	public List<Scene> fetchScenesByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
+		log.info("fetchScenesByCastmemberInfo has been called for castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
+		
+		return sceneDao.fetchScenesByCastmemberInfo(castmemberId, firstName, lastName);
+	
+	}
+	
+	@Override
+	public List<Scene> fetchScenesByPart(String characterName) {
+		log.info("fetchScenesByPart has been called for characterName={}", characterName);
+		
+		return sceneDao.fetchScenesByPart(characterName);
+	
+	}
+	
 
 	@Override
 	public Optional<Scene> addNewScene(String musicalName, Integer sceneNumber, String sceneName, String songTitle, Integer songId, String act,

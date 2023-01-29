@@ -9,17 +9,28 @@ public interface CastMemberService {
 	
 /**
  * 
- * @param castMemberPK
+ * @param castmemberId
  * @param firstName
  * @param lastName
  * @return
  */
-List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName);
+	
+List<CastMember> fetchCastMember(Integer castmemberId, String firstName, String lastName);
+/**
+ * 
+ * @param musicalName
+ * @return
+ */
 
+List<CastMember> fetchCastMemberByMusical(String musicalName);
 
-	//intended for use with fetchCastByMusical, possibly fetchCastByScene
-//List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName, String characterName);
+/**
+ * 
+ * @param characterName
+ * @return
+ */
 
+List<CastMember> fetchCastMemberByPart(String characterName);
 
 /**
  * 
@@ -31,6 +42,7 @@ List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String 
  * @param costumeComplete
  * @return
  */
+
 Optional<CastMember> newCastMember(String firstName, String lastName, String phoneNumber,
 	Boolean tapPerformer, Boolean costumeComplete);
 
@@ -45,6 +57,7 @@ Optional<CastMember> newCastMember(String firstName, String lastName, String pho
  * @param costumeComplete
  * @return
  */
+
 Optional<CastMember> updateCastMember(String firstName, String lastName, String newFirstName, String newLastName,
 		String phoneNumber, Boolean tapPerformer, Boolean costumeComplete);
 	
@@ -52,9 +65,10 @@ Optional<CastMember> updateCastMember(String firstName, String lastName, String 
  * 
  * @param firstName
  * @param lastName
+ * @param phoneNumber
  * @return
  */
-Optional<CastMember> deleteCastMember(String firstName, String lastName);
 
+Optional<CastMember> deleteCastMember(String firstName, String lastName, String phoneNumber);
 	
 }

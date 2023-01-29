@@ -20,14 +20,34 @@ public class DefaultPartService implements PartService {
 	
 	@Transactional
 	@Override
-	public List<Part> fetchParts(Integer partId, Integer castId, String characterName, String characterGroup, 
-			String musicalName, String firstName, String lastName, Integer sceneId) {
-		log.info("fetchPart has been called: partId={}, castId={}, characterName={}, characterGroup={}, "
-				+ "musicalName={}, firstName={}, lastName={}, sceneId={}", partId, castId, characterName, characterGroup,
-				musicalName, firstName, lastName, sceneId);
+	public List<Part> fetchPartsByMusical(String musicalName) {
+		log.info("fetchPart has been called: musicalName={}", musicalName);
 		
-		return partDao.fetchParts(partId, castId, characterName, characterGroup, musicalName, firstName, lastName, sceneId);
+		return partDao.fetchPartsByMusical(musicalName);
 	}
 	
+	@Transactional
+	@Override
+	public List<Part> fetchPartsByScene(String musicalName, Integer sceneNumber) {
+		log.info("fetchPart has been called: musicalName={}, sceneNumber={}", musicalName, sceneNumber);
+		
+		return partDao.fetchPartsByScene(musicalName, sceneNumber);
+	}
+	
+	@Transactional
+	@Override
+	public List<Part> fetchPartsByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
+		log.info("fetchPart has been called: partNumber={}, castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
+		
+		return partDao.fetchPartsByCastmemberInfo(castmemberId, firstName, lastName);
+	}
+	
+	@Transactional
+	@Override
+	public Optional<Part> linkCastmemberToPart(String musicalName, String characterName, String firstName, String lastName) {
+		log.info("linkCastmemberToPart has been called: musicalName={}, characterName={}, firstName={}, lastName={}", musicalName, characterName, firstName, lastName);
+		
+		return partDao.linkCastmemberToPart(musicalName, characterName, firstName, lastName);
+	}
 
 }

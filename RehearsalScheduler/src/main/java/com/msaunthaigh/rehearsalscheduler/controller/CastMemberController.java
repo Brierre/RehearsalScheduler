@@ -31,22 +31,20 @@ import io.swagger.v3.oas.annotations.servers.Server;
 	@Server(url = "http://localhost:8080", description = "Local server")})
 
 public interface CastMemberController {
-	//This section assumes we are working with only one set of musical data (e.g. 'Nunsense' scenes, parts, and cast members)
-	//Future implementation: fetchInfoByMusical(), a method that takes a musical name and returns fetchCastByMusical, fetchSceneByMusical, 
-	//	and fetchPartByMusical
 
-	//GET retrieves cast information
+//GET retrieves cast information
+//fetchCastMember()
 	// @formatter:off
 	@Operation(
 		summary = "Returns a list of cast members",
-		description = "Returns a list of cast members given a cast member ID, first name/last name, or character name",
+		description = "Returns a list of cast members given a cast member ID or first name/last name",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
-					description = "A list of cast members is returned.",
-					content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = CastMember.class))),
+				description = "A list of cast members is returned.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
 			@ApiResponse(
 				responseCode = "400",
 				description = "Invalid request parameters",
@@ -66,46 +64,139 @@ public interface CastMemberController {
 		
 		parameters = {
 			@Parameter(
-				name = "castMemberPK",
-				allowEmptyValue = true,
+				name = "castmemberId",
+				allowEmptyValue = false,
 				required = false,
 				description = "Cast member ID"),
 			@Parameter(
 				name = "firstName",
-				allowEmptyValue = true,
+				allowEmptyValue = false,
 				required = false,
-				description = "Cast member's first name"),
+				description = "Cast member's first name (must also specify last name)"),
 			@Parameter(
 				name = "lastName",
-				allowEmptyValue = true,
+				allowEmptyValue = false,
 				required = false,
-				description = "Cast member's last name")
+				description = "Cast member's last name (must also specify first name)")
 		}
 	)
 	
-	//GET retrieves cast information
-	@GetMapping
+	@GetMapping(value = "/castmember-by-castmember-info")
 	@ResponseStatus(code = HttpStatus.OK)
 	List<CastMember> fetchCastMember(
 		@RequestParam(required = false)
-		Integer castMemberPK,
+		Integer castmemberId,
 		@RequestParam(required = false)
 		String firstName,
 		@RequestParam(required = false)
 		String lastName);
 	// @formatter:on
 	
-//POST creates a new cast member in database
+//GET retrieves cast information
+//fetchCastMemberByMusical()
+	// @formatter:off
 	@Operation(
-		summary = "Adds a cast member",
-		description = "Creates a new cast member with required fields: first name, last name, character name",
+		summary = "Returns a list of cast members",
+		description = "Returns a list of cast members given a musical name",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
-					description = "New cast member created",
-					content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = CastMember.class))),
+				description = "A list of cast members is returned.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Invalid request parameters",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "404",
+				description = "No cast members were found using the supplied criteria.",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "500",
+				description = "An unplanned error has occurred.",
+				content = @Content(
+					mediaType = "application/json"))
+		},
+		
+		parameters = {
+			@Parameter(
+				name = "musicalName",
+				allowEmptyValue = false,
+				required = true,
+				description = "Musical Name")
+		}
+	)
+	
+	@GetMapping(value = "/castmember-by-musical")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<CastMember> fetchCastMemberByMusical(
+		@RequestParam(required = true)
+		String musicalName);
+	// @formatter:on
+	
+//GET retrieves cast information
+//fetchCastMemberByPart()
+	// @formatter:off
+	@Operation(
+		summary = "Returns a list of cast members",
+		description = "Returns a list of cast members given a character name",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "A list of cast members is returned.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Invalid request parameters",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "404",
+				description = "No cast members were found using the supplied criteria.",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "500",
+				description = "An unplanned error has occurred.",
+				content = @Content(
+					mediaType = "application/json"))
+		},
+		
+		parameters = {
+			@Parameter(
+				name = "characterName",
+				allowEmptyValue = false,
+				required = false,
+				description = "Name of Character"),
+		}
+	)
+	
+	@GetMapping(value = "/castmember-by-part")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<CastMember> fetchCastMemberByPart(
+		@RequestParam(required = false)
+		String characterName);
+	// @formatter:on
+	
+//POST creates a new cast member in database
+//newCastMember()
+	// @formatter:off
+	@Operation(
+		summary = "Adds a cast member",
+		description = "Creates a new cast member with required fields: first name, last name",
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "New cast member created",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
 			@ApiResponse(
 				responseCode = "400",
 				description = "Invalid request parameters",
@@ -136,23 +227,22 @@ public interface CastMemberController {
 				description = "Cast member's last name"),
 			@Parameter(
 				name = "phoneNumber",
-				allowEmptyValue = true,
-				required = false,
+				allowEmptyValue = false,
+				required = true,
 				description = "Phone Number"),
 			@Parameter(
 				name = "tapPerformer",
-				allowEmptyValue = true,
-				required = false,
+				allowEmptyValue = false,
+				required = true,
 				description = "Member of tap troupe?"),
 			@Parameter(
-				name = "costume complete",
-				allowEmptyValue = true,
-				required = false,
+				name = "costumeComplete",
+				allowEmptyValue = false,
+				required = true,
 				description = "Costume complete?")
 		}
 	)
 	
-	//POST creates a new cast member in database
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	Optional<CastMember> newCastMember(
@@ -160,25 +250,27 @@ public interface CastMemberController {
 		String firstName,
 		@RequestParam(required = true)
 		String lastName,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		String phoneNumber,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		Boolean tapPerformer,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		Boolean costumeComplete);
-	// @formatter:off
+	// @formatter:on
 	
-	//PUT updates a cast member's information
+//PUT updates a cast member's information
+//updateCastMember()
+	// @formatter:off
 	@Operation(
 		summary = "Update cast member",
 		description = "Updates a cast member's information",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
-					description = "Cast member information was updated successfully.",
-					content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = CastMember.class))),
+				description = "Cast member information was updated successfully.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
 			@ApiResponse(
 				responseCode = "400",
 				description = "Invalid request parameters",
@@ -220,22 +312,21 @@ public interface CastMemberController {
 			@Parameter(
 				name = "phoneNumber",
 				allowEmptyValue = false,
-				required = false,
+				required = true,
 				description = "Phone Number"),
 			@Parameter(
 				name = "tapPerformer",
 				allowEmptyValue = false,
-				required = false,
+				required = true,
 				description = "Member of tap troupe?"),
 			@Parameter(
 				name = "costumeComplete",
 				allowEmptyValue = false,
-				required = false,
+				required = true,
 				description = "Costume complete?")
 		}
 	)
-		
-	//PUT updates a cast member's information
+
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.OK)
 	Optional<CastMember> updateCastMember(
@@ -247,25 +338,27 @@ public interface CastMemberController {
 		String newFirstName,
 		@RequestParam(required = true)
 		String newLastName,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		String phoneNumber,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		Boolean tapPerformer,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		Boolean costumeComplete);
-	// @formatter:off
-		
-	//DELETE-deletes a cast member from the database
+	// @formatter:on
+	
+//DELETE-deletes a cast member from the database
+//deleteCastMember()
+	// @formatter:off	
 	@Operation(
 		summary = "Delete cast member",
 		description = "Deletes a cast member from the cast list",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
-					description = "Cast member information was deleted successfully.",
-					content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = CastMember.class))),
+				description = "Cast member information was deleted successfully.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
 			@ApiResponse(
 				responseCode = "400",
 				description = "Invalid request parameters",
@@ -293,18 +386,24 @@ public interface CastMemberController {
 				name = "lastName",
 				allowEmptyValue = false,
 				required = true,
-				description = "Cast member's last name")
+				description = "Cast member's last name"),
+			@Parameter(
+				name = "phoneNumber",
+				allowEmptyValue = true,
+				required = true,
+				description = "Phone Number (differentiator in the case of two cast members with the same name, xxx-xxx-xxxx) ")
 		}
 	)
 		
-	//DELETE-deletes a cast member from the database
-	//Future implementation: add a check to be sure you're deleting the correct cast member (e.g. two cast members have the same name)
 	@DeleteMapping
 	@ResponseStatus(code = HttpStatus.OK)
 	Optional<CastMember> deleteCastMember(
 		@RequestParam(required = true)
 		String firstName,
 		@RequestParam(required = true)
-		String lastName);
-	// @formatter:off
+		String lastName,
+		@RequestParam(required = true)
+		String phoneNumber);
+	// @formatter:on
+
 }

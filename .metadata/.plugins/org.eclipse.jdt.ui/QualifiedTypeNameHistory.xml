@@ -12,8 +12,11 @@
     <fullyQualifiedTypeName name="com.msaunthaigh.rehearsalscheduler.entity.Scene"/>
     <fullyQualifiedTypeName name="com.msaunthaigh.rehearsalscheduler.service.ScenePartService"/>
     <fullyQualifiedTypeName name="com.msaunthaigh.rehearsalscheduler.entity.CastMember"/>
-    <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="org.springframework.jdbc.core.ResultSetExtractor"/>
     <fullyQualifiedTypeName name="org.springframework.dao.DataAccessException"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
 </qualifiedTypeNameHistroy>

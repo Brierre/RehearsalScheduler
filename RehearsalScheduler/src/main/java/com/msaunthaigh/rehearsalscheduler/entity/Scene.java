@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Scene {
-	public static int sceneIdPK;
 	private String musicalName;
 	private Integer sceneNumber;
 	private String sceneName;

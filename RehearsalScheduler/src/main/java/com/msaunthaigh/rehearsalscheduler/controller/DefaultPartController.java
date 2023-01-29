@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
 import com.msaunthaigh.rehearsalscheduler.entity.Part;
 import com.msaunthaigh.rehearsalscheduler.service.PartService;
 
@@ -21,11 +22,27 @@ public class DefaultPartController implements PartController {
 	//GET operation, read/retrieve parts
 	
 	@Override
-	public List<Part> fetchParts(Integer partId, Integer castId, String characterName, String characterGroup, 
-			String musicalName, String firstName, String lastName, Integer sceneId) {
-		log.info("partId={}, castId={}, characterName={}, characterGroup={}, musicalName={}, firstName={}, lastName={}, sceneId={}", 
-			partId, castId, characterName, characterGroup, musicalName, firstName, lastName, sceneId);
-		return partService.fetchParts(partId, castId, characterName, characterGroup, musicalName, firstName, lastName, sceneId);
+	public List<Part> fetchPartsByMusical(String musicalName) {
+		log.info("musicalName={}", musicalName);
+		return partService.fetchPartsByMusical(musicalName);
+	}
+	
+	@Override
+	public List<Part> fetchPartsByScene(String musicalName, Integer sceneNumber) {
+		log.info("musicalName={}, sceneNumber={}", musicalName, sceneNumber);
+		return partService.fetchPartsByScene(musicalName, sceneNumber);
+	}
+	
+	@Override
+	public List<Part> fetchPartsByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
+		log.info("castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
+		return partService.fetchPartsByCastmemberInfo(castmemberId, firstName, lastName);
+	}
+	
+	@Override
+	public Optional<Part> linkCastmemberToPart(String musicalName, String characterName, String firstName, String lastName) {
+		log.info("musicalName={}, characterName={}, firstName={}, lastName={}", musicalName, characterName, firstName, lastName);
+		return partService.linkCastmemberToPart(musicalName, characterName, firstName, lastName);
 	}
 	
 }

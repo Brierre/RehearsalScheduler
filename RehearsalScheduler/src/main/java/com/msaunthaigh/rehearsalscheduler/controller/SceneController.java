@@ -26,16 +26,18 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @Validated
 @RequestMapping("/Scene")
+
 @OpenAPIDefinition(info = @Info(title = "Rehearsal Scheduler"), servers = {
-	@Server(url = "http://localhost:8080", description = "Local server")})
+		@Server(url = "http://localhost:8080", description = "Local server") })
 
 public interface SceneController {
 
+//GET retrieves scene information
+//fetchScenesByMusical()
 	// @formatter:off
-	//GET retrieves scene information
 	@Operation(
 		summary = "Returns a list of scenes",
-		description = "Returns a list of scenes given a piece of data (musical name, character, cast member)",
+		description = "Returns a list of scenes when given a musical name",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
@@ -65,22 +67,53 @@ public interface SceneController {
 				name = "musicalName",
 				allowEmptyValue = false,
 				required = false,
-				description = "Name of musical"),
+				description = "Name of Musical")
+			}
+		)
+	
+	@GetMapping(value = "/scenes-by-musical")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<Scene> fetchScenesByMusical(
+		@RequestParam(required = false)
+		String musicalName);
+	// @formatter:on
+
+//GET retrieves scene information
+//fetchScenesByCastmemberInfo()
+	// @formatter:off
+	@Operation(
+		summary = "Returns a list of scenes",
+		description = "Returns a list of scenes when given a castmember ID or a castmember first/last name)",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "A list of scenes is returned.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = Scene.class))),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Invalid request parameters",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "404",
+				description = "No scenes were found using the supplied criteria.",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "500",
+				description = "An unplanned error has occurred.",
+				content = @Content(
+					mediaType = "application/json"))
+		},
+		
+		parameters = {
 			@Parameter(
-				name = "sceneNumber",
+				name = "castmemberId",
 				allowEmptyValue = false,
 				required = false,
-				description = "Scene Number"),
-			@Parameter(
-				name = "sceneName",
-				allowEmptyValue = false,
-				required = false,
-				description = "Name of scene"),
-			@Parameter(
-				name = "songTitle",
-				allowEmptyValue = false,
-				required = false,
-				description = "Song title"),
+				description = "Cast member ID"),
 			@Parameter(
 				name = "firstName",
 				allowEmptyValue = false,
@@ -90,142 +123,182 @@ public interface SceneController {
 				name = "lastName",
 				allowEmptyValue = false,
 				required = false,
-				description = "Cast member last name (must also specify first name)"),
+				description = "Cast member last name (must also specify first name)")
+			}
+		)
+
+	@GetMapping(value = "/scenes-by-castmember-info")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<Scene> fetchScenesByCastmemberInfo(
+		@RequestParam(required = false)
+		Integer castmemberId,
+		@RequestParam(required = false)
+		String firstName,
+		@RequestParam(required = false)
+		String lastName);
+	// @formatter:on
+
+//GET retrieves scene information
+//fetchScenesByPart()
+	// @formatter:off
+	@Operation(
+		summary = "Returns a list of scenes",
+		description = "Returns a list of scenes when given a character name",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "A list of scenes is returned.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = Scene.class))),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Invalid request parameters",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "404",
+				description = "No scenes were found using the supplied criteria.",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "500",
+				description = "An unplanned error has occurred.",
+				content = @Content(
+					mediaType = "application/json"))
+		},
+		
+		parameters = {
 			@Parameter(
 				name = "characterName",
 				allowEmptyValue = false,
 				required = false,
-				description = "Name of character")})
-	//GET retrieves scene information
-	@GetMapping
+				description = "Name of character")
+			}
+		)
+	
+	@GetMapping(value = "/scenes-by-part")
 	@ResponseStatus(code = HttpStatus.OK)
-	List<Scene> fetchScenes(
+	List<Scene> fetchScenesByPart(
 		@RequestParam(required = false)
+		String characterName);
+	// @formatter:on
+
+//POST adds a new scene
+//addNewScene()
+	// @formatter:off
+	@Operation(
+		summary = "Adds a scene",
+		description = "Creates a new scene",
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+					description = "New scene created",
+					content = @Content(
+						mediaType = "application/json",
+						schema = @Schema(implementation = CastMember.class))),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Invalid request parameters",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Unable to create new scene with the information given",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "500",
+				description = "An unplanned error has occurred.",
+				content = @Content(
+					mediaType = "application/json"))
+		},
+
+		parameters = {
+			@Parameter(
+				name = "musicalName",
+				allowEmptyValue = false,
+				required = true,
+				description = "Name of Musical"),
+			@Parameter(
+				name = "sceneNumber",
+				allowEmptyValue = false,
+				required = true,
+				description = "Scene Number"),
+			@Parameter(
+				name = "sceneName",
+				allowEmptyValue = false,
+				required = false,
+				description = "Name of Scene"),
+			@Parameter(
+				name = "songTitle",
+				allowEmptyValue = false,
+				required = false,
+				description = "Name of Song"),
+			@Parameter(
+				name = "songId",
+				allowEmptyValue = false,
+				required = false,
+				description = "Song Number"),
+			@Parameter(
+				name = "act",
+				allowEmptyValue = false,
+				required = true,
+				description = "Act (I or II)"),
+			@Parameter(
+				name = "location",
+				allowEmptyValue = false,
+				required = false,
+				description = "Scene Location (e.g. 'at the restaurant'"),
+			@Parameter(
+				name = "pageBegin",
+				allowEmptyValue = false,
+				required = false,
+				description = "Page Scene Begins"),
+			@Parameter(
+				name = "pageEnd",
+				allowEmptyValue = false,
+				required = false,
+				description = "Page Scene Ends")
+		}
+	)
+	
+	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
+	Optional<Scene> addNewScene(
+		@RequestParam(required = true)
 		String musicalName,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		Integer sceneNumber,
 		@RequestParam(required = false)
 		String sceneName,
 		@RequestParam(required = false)
 		String songTitle,
 		@RequestParam(required = false)
-		String firstName,
+		Integer songId,
+		@RequestParam(required = true)
+		String act,
 		@RequestParam(required = false)
-		String lastName,
+		String location,
 		@RequestParam(required = false)
-		String characterName);
+		Integer pageBegin,
+		@RequestParam(required = false)
+		Integer pageEnd);
+	// @formatter:on
 
-	//POST adds a new scene
-	@Operation(
-			summary = "Adds a scene",
-			description = "Creates a new scene",
-			responses = {
-				@ApiResponse(
-					responseCode = "200",
-						description = "New scene created",
-						content = @Content(
-							mediaType = "application/json",
-							schema = @Schema(implementation = CastMember.class))),
-				@ApiResponse(
-					responseCode = "400",
-					description = "Invalid request parameters",
-					content = @Content(
-						mediaType = "application/json")),
-				@ApiResponse(
-					responseCode = "404",
-					description = "Unable to create new scene with the information given",
-					content = @Content(
-						mediaType = "application/json")),
-				@ApiResponse(
-					responseCode = "500",
-					description = "An unplanned error has occurred.",
-					content = @Content(
-						mediaType = "application/json"))
-			},
-
-			parameters = {
-				@Parameter(
-					name = "musicalName",
-					allowEmptyValue = false,
-					required = true,
-					description = "Name of Musical"),
-				@Parameter(
-					name = "sceneNumber",
-					allowEmptyValue = false,
-					required = true,
-					description = "Scene Number"),
-				@Parameter(
-					name = "sceneName",
-					allowEmptyValue = true,
-					required = false,
-					description = "Name of Scene"),
-				@Parameter(
-					name = "songTitle",
-					allowEmptyValue = true,
-					required = false,
-					description = "Name of Song"),
-				@Parameter(
-					name = "songId",
-					allowEmptyValue = true,
-					required = false,
-					description = "Song Number"),
-				@Parameter(
-					name = "act",
-					allowEmptyValue = true,
-					required = false,
-					description = "Act (I or II)"),
-				@Parameter(
-					name = "location",
-					allowEmptyValue = true,
-					required = false,
-					description = "Scene Location (e.g. 'at the restaurant'"),
-				@Parameter(
-					name = "pageBegin",
-					allowEmptyValue = true,
-					required = false,
-					description = "Page Scene Begins"),
-				@Parameter(
-					name = "pageEnd",
-					allowEmptyValue = true,
-					required = false,
-					description = "Page Scene Ends")
-			}
-		)
-	//POST adds a new scene
-		@PostMapping
-		@ResponseStatus(code = HttpStatus.CREATED)
-		Optional<Scene> addNewScene(
-			@RequestParam(required = true)
-			String musicalName,
-			@RequestParam(required = true)
-			Integer sceneNumber,
-			@RequestParam(required = false)
-			String sceneName,
-			@RequestParam(required = false)
-			String songTitle,
-			@RequestParam(required = false)
-			Integer songId,
-			@RequestParam(required = false)
-			String act,
-			@RequestParam(required = false)
-			String location,
-			@RequestParam(required = false)
-			Integer pageBegin,
-			@RequestParam(required = false)
-			Integer pageEnd);
-		// @formatter:off
-
-	//PUT updates scene information
+//PUT updates scene information
+//updateScene()
+	// @formatter:off
 	@Operation(
 		summary = "Update scene",
 		description = "Updates scene information",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
-					description = "Scene information was updated successfully.",
-					content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = CastMember.class))),
+				description = "Scene information was updated successfully.",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
 			@ApiResponse(
 				responseCode = "400",
 				description = "Invalid request parameters",
@@ -272,7 +345,7 @@ public interface SceneController {
 			@Parameter(
 				name = "act",
 				allowEmptyValue = false,
-				required = false,
+				required = true,
 				description = "Act (I or II)"),
 			@Parameter(
 				name = "location",
@@ -291,8 +364,7 @@ public interface SceneController {
 				description = "Ends on Page?")
 		}
 	)
-		
-	//PUT updates scene information
+
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.OK)
 	Optional<Scene> updateScene(
@@ -306,7 +378,7 @@ public interface SceneController {
 		String songTitle,
 		@RequestParam(required = false)
 		Integer songId,
-		@RequestParam(required = false)
+		@RequestParam(required = true)
 		String act,
 		@RequestParam(required = false)
 		String location,
@@ -314,5 +386,5 @@ public interface SceneController {
 		Integer pageBegin,
 		@RequestParam(required = false)
 		Integer pageEnd);
-	// @formatter:off
+	// @formatter:on
 }

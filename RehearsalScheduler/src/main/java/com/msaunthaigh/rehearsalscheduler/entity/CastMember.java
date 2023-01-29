@@ -11,9 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CastMember {
 	
-	private Integer castMemberPK;
+	private Integer castmemberId;
 	private String firstName;
 	private String lastName;
+	private String newFirstName;
+	private String newLastName;
+	private String musicalName;
+	private String characterName;
 	private String phoneNumber;
 	private Boolean tapPerformer;
 	private Boolean costumeComplete;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.msaunthaigh.rehearsalscheduler.dao.ScenePartDao;
+import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
 import com.msaunthaigh.rehearsalscheduler.entity.ScenePart;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +21,18 @@ public class DefaultScenePartService implements ScenePartService {
 	
 	@Transactional
 	@Override
-	public List<ScenePart> fetchPartsByScene(Integer sceneIdFK, Integer partIdFK, String firstName, String lastName, String characterName, String musicalName) {
-		log.info("matchPartsToScene has been called for sceneIdFK={}, partIdFK={}", sceneIdFK, partIdFK);
-		return scenePartDao.fetchPartsByScene(sceneIdFK, partIdFK, firstName, lastName, characterName, musicalName);
+	public Optional<ScenePart> enterScenePartInfo(Integer sceneNumber, Integer partNumber, String musicalName) {
+		log.info("enterScenePartInfo has been called for sceneNumber={}, partNumber={}, musicalName={}", sceneNumber, partNumber, musicalName);
+		return scenePartDao.enterScenePartInfo(sceneNumber, partNumber, musicalName);
 	}
-
-	@Override
-	public Optional<ScenePart> populateFKFromCastmember(Integer sceneIdFK, Integer partIdFK, Integer castId) {
-		log.info("populateFKFromCastmember has been called for sceneIdFK={}", sceneIdFK, partIdFK, castId);
-		return scenePartDao.populateFKFromCastmember(sceneIdFK, partIdFK, castId);
-	}
+	
+	//not needed after database refactor, saved in case I want to go back to the old format
+//	@Autowired
+//	private ScenePartDao scenePartDao;
+//	
+//	public Optional<ScenePart> populateFK(Integer sceneNumber) {
+//		log.info("populateFK has been called for sceneNumber={}", sceneNumber);
+//		return scenePartDao.populateFK(sceneNumber);
+//	}
 
 }

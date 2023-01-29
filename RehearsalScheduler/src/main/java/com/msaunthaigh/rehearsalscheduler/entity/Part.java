@@ -10,12 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Part {
-	private Integer partId;
-	private Integer castId;
+	private Integer partNumber;
+	private String musicalName;
+	private Integer castmemberId;
 	private String characterName;
 	private String characterGroup;
-	private String musicalName;
 	private String firstName;
 	private String lastName;
-	private Integer sceneId;
+	private Integer sceneNumber;
+	
 }

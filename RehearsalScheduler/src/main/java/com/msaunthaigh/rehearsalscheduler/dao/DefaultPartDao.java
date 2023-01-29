@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
 import com.msaunthaigh.rehearsalscheduler.entity.Part;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,56 +28,39 @@ public class DefaultPartDao implements PartDao {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
+	//GET retrieve parts
 	@Override
-	public List<Part> fetchParts(Integer partId, Integer castId, String characterName, 
-			String characterGroup, String musicalName, String firstName, String lastName, Integer sceneId) {
-		log.info("DAO: partId={}, castId={}, characterName={}, characterGroup={}, musicalName={}, firstName={}, lastName={}, sceneId={}",
-				partId, castId, characterName, characterGroup, musicalName, firstName, lastName, sceneId);
+	public List<Part> fetchPartsByMusical(String musicalName) {
+		log.info("DAO: musicalName={}", musicalName);
+		
 		// @formatter:off
 		String sql = ""
-				+ "SELECT part.part_id, part.castmember_id, part.character_name, part.character_group, "
-				+ "part.musical_name, castmember.first_name, castmember.last_name, scene.scene_id "
+				+ "SELECT part.part_number, part.musical_name, part.castmember_id, part.character_name, part.character_group, castmember.first_name, castmember.last_name "
 				+ "FROM part "
-				
-				+ "JOIN scene_part "
-				+ "ON part.part_id = scene_part.part_id_fk "
 				
 				+ "JOIN castmember "
 				+ "ON part.castmember_id = castmember.castmember_id "
 				
-				+ "JOIN scene "
-				+ "ON (SELECT MIN(scene.scene_id) = scene_part.scene_id_fk "
-				
 				+ "WHERE part.musical_name = :musical_name "
-				+ "OR part.part_id = :part_id "
-				+ "OR scene.scene_id = :scene_id "
-				+ "OR ((castmember.first_name = :first_name AND castmember.last_name = :last_name) OR (castmember.castmember_id = :castmember_id))";
+				+ "AND (part.castmember_id = castmember.castmember_id OR part.castmember_id IS NULL)";
 		
 		// @formatter:on
 		
 		Map<String, Object> params = new HashMap<>();
-		params.put("part_id", partId);
-		params.put("castmember_id", castId);
-		params.put("character_name", characterName);
-		params.put("character_group", characterGroup);
 		params.put("musical_name", musicalName);
-		params.put("first_name", firstName);
-		params.put("last_name", lastName);
-		params.put("scene_id", sceneId);
 		
 		return jdbcTemplate.query(sql, params, new RowMapper<>() {
 			@Override
 			public Part mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// @formatter:off
 				return Part.builder()
-						.partId(rs.getInt("part_id"))
-						.castId(rs.getInt("castmember_id"))
+						.partNumber(rs.getInt("part_number"))
+						.castmemberId(rs.getInt("castmember_id"))
 						.characterName(rs.getString("character_name"))
 						.characterGroup(rs.getString("character_group"))
 						.musicalName(rs.getString("musical_name"))
 						.firstName(rs.getString("first_name"))
 						.lastName(rs.getString("last_name"))
-						.sceneId(rs.getInt("scene_id"))
 						.build();
 				
 				// @formatter:on
@@ -84,7 +68,122 @@ public class DefaultPartDao implements PartDao {
 		});
 	}
 	
-}
+	@Override
+	public List<Part> fetchPartsByScene(String musicalName, Integer sceneNumber) {
+		log.info("DAO: musicalName={}, sceneNumber={}", musicalName, sceneNumber);
+		// @formatter:off
+		String sql = ""
+				+ "SELECT DISTINCT part.part_number, part.musical_name, part.castmember_id, part.character_name, part.character_group, castmember.first_name, castmember.last_name, scene_part.scene_number "
+				+ "FROM part "
+				
+				+ "JOIN scene_part "
+				+ "ON part.part_number = scene_part.part_number "
+				
+				+ "JOIN castmember "
+				+ "ON part.castmember_id = castmember.castmember_id "
+				
+				+ "WHERE part.musical_name = :musical_name AND scene_part.scene_number = :scene_number";
+		// @formatter:on
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("musical_name", musicalName);
+		params.put("scene_number", sceneNumber);
+		
+		return jdbcTemplate.query(sql, params, new RowMapper<>() {
+			@Override
+			public Part mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// @formatter:off
+				return Part.builder()
+						.partNumber(rs.getInt("part_number"))
+						.castmemberId(rs.getInt("castmember_id"))
+						.characterName(rs.getString("character_name"))
+						.characterGroup(rs.getString("character_group"))
+						.musicalName(rs.getString("musical_name"))
+						.firstName(rs.getString("first_name"))
+						.lastName(rs.getString("last_name"))
+						.sceneNumber(rs.getInt("scene_number"))
+						.build();
+				
+				// @formatter:on
+			}
+		});
+	}
+	
+	@Override
+	public List<Part> fetchPartsByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
+		log.info("DAO: castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
+		// @formatter:off
+		String sql = ""
+				+ "SELECT part.part_number, part.musical_name, part.castmember_id, part.character_name, part.character_group, castmember.first_name, castmember.last_name "
+				+ "FROM part "
+				
+				+ "INNER JOIN castmember "
+				+ "ON part.castmember_id = castmember.castmember_id "
+				+ "OR part.castmember_id IS NULL "
+				
+				+ "WHERE (castmember.first_name = :first_name AND castmember.last_name = :last_name) "
+				+ "OR castmember.castmember_id = :castmember_id";
+		
+		// @formatter:on
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("castmember_id", castmemberId);
+		params.put("first_name", firstName);
+		params.put("last_name", lastName);
+		
+		return jdbcTemplate.query(sql, params, new RowMapper<>() {
+			@Override
+			public Part mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// @formatter:off
+				return Part.builder()
+						.partNumber(rs.getInt("part_number"))
+						.castmemberId(rs.getInt("castmember_id"))
+						.musicalName(rs.getString("musical_name"))
+						.characterName(rs.getString("character_name"))
+						.characterGroup(rs.getString("character_group"))
+						.firstName(rs.getString("first_name"))
+						.lastName(rs.getString("last_name"))
+						.build();
+				
+				// @formatter:on
+			}
+		});
+	}
+	
+	@Override
+	public Optional<Part> linkCastmemberToPart(String musicalName, String characterName, String firstName, String lastName) {
+		log.info("DAO: musicalName={}, characterName={} assigned to: firstName={}, lastName={}", musicalName, characterName, firstName, lastName);
+		
+		// @formatter:off
+		String sql = ""
+				+ "UPDATE part "
+				+ "SET castmember_id = ("
+				+ "SELECT castmember_id "
+				+ "FROM castmember "
+				+ "WHERE first_name = :first_name AND last_name = :last_name) "
+				+ "WHERE musical_name = :musical_name AND character_name = :character_name";
+		// @formatter:on
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("musical_name", musicalName);
+		params.put("character_name", characterName);
+		params.put("first_name", firstName);
+		params.put("last_name", lastName);
+
+		jdbcTemplate.update(sql, params);
+		return Optional.ofNullable(Part.builder()
+			// @formatter:off
+			.musicalName(musicalName)
+			.characterName(characterName)
+			.firstName(firstName)
+			.lastName(lastName)
+			.build());
+			// @formatter:on
+	    
+		  }
+
+	}
+
 	
 
 

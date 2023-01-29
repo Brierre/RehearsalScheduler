@@ -6,9 +6,17 @@ import java.util.Optional;
 import com.msaunthaigh.rehearsalscheduler.entity.ScenePart;
 
 public interface ScenePartService {
-
-	List<ScenePart> fetchPartsByScene(Integer sceneIdFK, Integer partIdFK, String firstName, String lastName, String characterName, String musicalName);
-
-	Optional<ScenePart> populateFKFromCastmember(Integer sceneIdFK, Integer partIdFK, Integer castId);
-
+	/**
+	 * 
+	 * @param sceneNumber
+	 * @param partNumber
+	 * @param musicalName
+	 * @return
+	 */
+	
+	Optional<ScenePart> enterScenePartInfo(Integer sceneNumber, Integer partNumber, String musicalName);
+	
+	
+	//not needed after database refactor, saved in case I want to go back to the old format
+//	Optional<ScenePart> populateFK(Integer sceneNumber);
 }

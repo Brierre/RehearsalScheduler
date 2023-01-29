@@ -1,0 +1,18 @@
+package com.msaunthaigh.rehearsalscheduler.service;
+
+
+import java.util.List;
+import java.util.Optional;
+
+import com.msaunthaigh.rehearsalscheduler.entity.Part;
+
+public interface PartService {
+
+	List<Part> fetchPartsByMusical(Integer partNumber, Integer castmemberId, String characterName, String characterGroup, 
+			String musicalName, String firstName, String lastName);
+	
+	List<Part> fetchPartsByScene(String musicalName, Integer sceneNumber);
+	
+	List<Part> fetchPartsByCastmemberInfo(Integer castmemberId, String firstName, String lastName);
+
+}

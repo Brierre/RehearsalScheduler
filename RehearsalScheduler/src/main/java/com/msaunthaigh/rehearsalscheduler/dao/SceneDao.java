@@ -13,7 +13,11 @@ public interface SceneDao {
 	 * @param songTitle
 	 * @return
 	 */
-	List<Scene> fetchScenes(String musicalName, Integer sceneNumber, String sceneName, String songTitle, String firstName, String lastName, String characterName);
+	List<Scene> fetchScenesByMusical(String musicalName);
+	
+	List<Scene> fetchScenesByCastmemberInfo(Integer castmemberId, String firstName, String lastName);
+	
+	List<Scene> fetchScenesByPart(String characterName);
 	
 	Optional<Scene> addNewScene(String musicalName, Integer sceneNumber, String sceneName, String songTitle, Integer songId, String act, String location, 
 		Integer pageBegin, Integer pageEnd);

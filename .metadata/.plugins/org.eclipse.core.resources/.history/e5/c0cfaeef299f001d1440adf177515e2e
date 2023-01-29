@@ -1,0 +1,26 @@
+package com.msaunthaigh.rehearsalscheduler.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.msaunthaigh.rehearsalscheduler.entity.Part;
+
+public interface PartDao {
+/**
+ * 
+ * @param partId
+ * @param castId
+ * @param characterName
+ * @param characterGroup
+ * @return
+ */
+	
+	List<Part> fetchPartsByMusical(Integer partNumber, Integer castmemberId, String characterName, String characterGroup, 
+			String musicalName, String firstName, String lastName);
+	
+	List<Part> fetchPartsByScene(String musicalName, Integer sceneNumber);
+	
+	List<Part> fetchPartsByCastmemberInfo(Integer partNumber, Integer castmemberId, String musicalName, String characterName, String characterGroup,
+			String firstName, String lastName);
+	
+}

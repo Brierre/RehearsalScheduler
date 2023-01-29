@@ -21,22 +21,28 @@ public class DefaultCastMemberService implements CastMemberService {
 	
 	@Transactional
 	@Override
-	public List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName) {
-		log.info("fetchCastMember has been called for castMemberPK={}, firstName={}, lastName={}", castMemberPK, firstName, lastName);
-		
-		return castMemberDao.fetchCastMember(castMemberPK, firstName, lastName);
+	public List<CastMember> fetchCastMember(Integer castmemberId, String firstName, String lastName) {
+		log.info("castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
+		return castMemberDao.fetchCastMember(castmemberId, firstName, lastName);
 	}
-
-	
-	//intended for use with fetchCastByMusical, possibly fetchCastByScene
-//	@Override
-//	public List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName, String characterName) {
-//		log.info("fetchCastMember has been called for castMemberPK={}, firstName={}, lastName={}, characterName={}", castMemberPK, firstName, lastName, characterName);
-//		
-//		return castMemberDao.fetchCastMember(castMemberPK, firstName, lastName, characterName);
-//	}
 	
 	
+	//GET/READ operation, read/retrieve cast members
+	@Override
+	public List<CastMember> fetchCastMemberByMusical(String musicalName) {
+		log.info("musicalName={}", musicalName);
+		return castMemberDao.fetchCastMemberByMusical(musicalName);
+	}
+	
+	
+	//GET/READ operation, read/retrieve cast members
+	@Override
+	public List<CastMember> fetchCastMemberByPart(String characterName) {
+		log.info("characterName={}", characterName);
+		return castMemberDao.fetchCastMemberByPart(characterName);
+	}
+	
+	//POST/CREATE operation, create new cast member
 	@Override
 	public Optional<CastMember> newCastMember(String firstName, String lastName, String phoneNumber,
 			Boolean tapPerformer, Boolean costumeComplete) {
@@ -44,6 +50,7 @@ public class DefaultCastMemberService implements CastMemberService {
 		return castMemberDao.newCastMember(firstName, lastName, phoneNumber, tapPerformer, costumeComplete);
 	}
 
+	//PUT/UPDATE operation, update cast member information
 	@Override
 	public Optional<CastMember> updateCastMember(String firstName, String lastName, String newFirstName, String newLastName, 
 			String phoneNumber, Boolean tapPerformer, Boolean costumeComplete) {
@@ -53,10 +60,11 @@ public class DefaultCastMemberService implements CastMemberService {
 				tapPerformer, costumeComplete);
 	}
 
+	//DELETE operation, delete a cast member
 	@Override
-	public Optional<CastMember> deleteCastMember(String firstName, String lastName) {
-		log.info("deleteCastMember has been called for cast member firstName={}, lastName={}", firstName, lastName);
-		return castMemberDao.deleteCastMember(firstName, lastName);
+	public Optional<CastMember> deleteCastMember(String firstName, String lastName, String phoneNumber) {
+		log.info("deleteCastMember has been called for cast member firstName={}, lastName={}, phoneNumber={}", firstName, lastName, phoneNumber);
+		return castMemberDao.deleteCastMember(firstName, lastName, phoneNumber);
 	}
 
 }

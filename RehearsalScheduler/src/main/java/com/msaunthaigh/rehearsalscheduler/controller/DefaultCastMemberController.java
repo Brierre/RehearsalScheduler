@@ -19,18 +19,23 @@ public class DefaultCastMemberController implements CastMemberController {
 	
 	//GET/READ operation, read/retrieve cast members
 	@Override
-	public List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName) {
-		log.info("castMemberPK={}, firstName={}, lastName={}", castMemberPK, firstName, lastName);
-		return castMemberService.fetchCastMember(castMemberPK, firstName, lastName);
+	public List<CastMember> fetchCastMember(Integer castmemberId, String firstName, String lastName) {
+		log.info("castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
+		return castMemberService.fetchCastMember(castmemberId, firstName, lastName);
 	}
 	
-	//intended for use with fetchCastByMusical, possibly fetchCastByScene
-//	//GET/READ operation, read/retrieve cast members
-//	@Override
-//	public List<CastMember> fetchCastMember(Integer castMemberPK, String firstName, String lastName, String characterName) {
-//		log.info("castMemberPK={}, firstName={}, lastName={}, characterName={}", castMemberPK, firstName, lastName, characterName);
-//		return castMemberService.fetchCastMember(castMemberPK, firstName, lastName, characterName);
-//	}
+	@Override
+	public List<CastMember> fetchCastMemberByMusical(String musicalName) {
+		log.info("musicalName={}", musicalName);
+		return castMemberService.fetchCastMemberByMusical(musicalName);
+	}
+	
+	@Override
+	public List<CastMember> fetchCastMemberByPart(String characterName) {
+		log.info("characterName={}", characterName);
+		return castMemberService.fetchCastMemberByPart(characterName);
+	}
+	
 	
 	//CREATE operation, create a new cast member
 	@Override	
@@ -40,20 +45,23 @@ public class DefaultCastMemberController implements CastMemberController {
 		return castMemberService.newCastMember(firstName, lastName, phoneNumber, tapPerformer, costumeComplete);
 	}
 	
+	
 	//UPDATE operation, change cast member information
 	@Override
 	public Optional<CastMember> updateCastMember(String firstName, String lastName, String newFirstName, String newLastName, 
 			String phoneNumber, Boolean tapPerformer, Boolean costumeComplete) {
-		log.info("newFirstName={}, newLastName={}, newPhoneNumber={}, newTapPerformer={}, newCostumeComplete={}", 
+		log.info("newFirstName={}, newLastName={}, phoneNumber={}, tapPerformer={}, costumeComplete={}", 
 			newFirstName, newLastName, phoneNumber, tapPerformer, costumeComplete);
 		return castMemberService.updateCastMember (firstName, lastName, newFirstName, newLastName,
 			 phoneNumber, tapPerformer, costumeComplete);
 	}
 	
+	
 	//DELETE operation, delete a cast member from the list
 	@Override
-	public Optional<CastMember> deleteCastMember(String firstName, String lastName) {
-		return castMemberService.deleteCastMember(firstName, lastName);
+	public Optional<CastMember> deleteCastMember(String firstName, String lastName, String phoneNumber) {
+		log.info("firstName={}, lastName={}, phoneNumber={}", firstName, lastName, phoneNumber);
+		return castMemberService.deleteCastMember(firstName, lastName, phoneNumber);
 	}
 	
 	

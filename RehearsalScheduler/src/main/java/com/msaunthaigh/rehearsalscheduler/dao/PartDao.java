@@ -6,16 +6,13 @@ import java.util.Optional;
 import com.msaunthaigh.rehearsalscheduler.entity.Part;
 
 public interface PartDao {
-/**
- * 
- * @param partId
- * @param castId
- * @param characterName
- * @param characterGroup
- * @return
- */
 	
-	List<Part> fetchParts(Integer partId, Integer castId, String characterName, String characterGroup, 
-			String musicalName, String firstName, String lastName, Integer sceneId);
+	List<Part> fetchPartsByMusical(String musicalName);
+	
+	List<Part> fetchPartsByScene(String musicalName, Integer sceneNumber);
+	
+	List<Part> fetchPartsByCastmemberInfo(Integer castmemberId, String firstName, String lastName);
+	
+	Optional<Part> linkCastmemberToPart(String musicalName, String characterName, String firstName, String lastName);
 	
 }
