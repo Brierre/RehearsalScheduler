@@ -31,116 +31,65 @@ import io.swagger.v3.oas.annotations.servers.Server;
 servers = {@Server(url = "http://localhost:8080", description = "Local server")})
 public interface ScenePartController {	
 
-	//POST creates a new cast member in database
-	//newCastMember()
-		// @formatter:off
-		@Operation(
-			summary = "Add scene-part",
-			description = "Creates a new entry to connect a scene to a part",
-			responses = {
-				@ApiResponse(
-					responseCode = "201",
-					description = "New cast member created",
-					content = @Content(
-						mediaType = "application/json",
-						schema = @Schema(implementation = CastMember.class))),
-				@ApiResponse(
-					responseCode = "400",
-					description = "Invalid request parameters",
-					content = @Content(
-						mediaType = "application/json")),
-				@ApiResponse(
-					responseCode = "404",
-					description = "Unable to create new cast member with the information given",
-					content = @Content(
-						mediaType = "application/json")),
-				@ApiResponse(
-					responseCode = "500",
-					description = "An unplanned error has occurred.",
-					content = @Content(
-						mediaType = "application/json"))
-			},
+//POST creates a new cast member in database
+//newCastMember()
+	// @formatter:off
+	@Operation(
+		summary = "Add scene-part",
+		description = "Creates a new entry to connect a scene to a part",
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "New cast member created",
+				content = @Content(
+					mediaType = "application/json",
+					schema = @Schema(implementation = CastMember.class))),
+			@ApiResponse(
+				responseCode = "400",
+				description = "Invalid request parameters",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Unable to create new cast member with the information given",
+				content = @Content(
+					mediaType = "application/json")),
+			@ApiResponse(
+				responseCode = "500",
+				description = "An unplanned error has occurred.",
+				content = @Content(
+					mediaType = "application/json"))
+		},
 			
-			parameters = {
-				@Parameter(
-					name = "sceneNumber",
-					allowEmptyValue = false,
-					required = true,
-					description = "Scene Number"),
-				@Parameter(
-					name = "partNumber",
-					allowEmptyValue = false,
-					required = true,
-					description = "Part Number"),
-				@Parameter(
-					name = "musicalName",
-					allowEmptyValue = false,
-					required = true,
-					description = "Musical Name")
-			}
-		)
+		parameters = {
+			@Parameter(
+				name = "sceneNumber",
+				allowEmptyValue = false,
+				required = true,
+				description = "Scene Number"),
+			@Parameter(
+				name = "partNumber",
+				allowEmptyValue = false,
+				required = true,
+				description = "Part Number"),
+			@Parameter(
+				name = "musicalName",
+				allowEmptyValue = false,
+				required = true,
+				description = "Musical Name")
+		}
+	)
 		
-		@PostMapping
-		@ResponseStatus(code = HttpStatus.CREATED)
-		Optional<ScenePart> enterScenePartInfo(
-			@RequestParam(required = true)
-			Integer sceneNumber,
-			@RequestParam(required = true)
-			Integer partNumber,
-			@RequestParam(required = true)
-			String musicalName);
-		// @formatter:on
-
-		
-		// None of this code is needed after a database refactoring. Saved in case I want to go back to the old database and add the castmember ID back into scene_part	
-		
-		
-	////PUT/UPDATE operation updates information from scene, part, and castmember tables
-	////populateFK()
-//		// @formatter:off
-//		@Operation(
-//			summary = "Update scene_part table",
-//			description = "Updates cast_id in join table",
-//			responses = {
-//				@ApiResponse(
-//					responseCode = "200",
-//						description = "Cast ID information was updated successfully.",
-//						content = @Content(
-//							mediaType = "application/json",
-//							schema = @Schema(implementation = ScenePart.class))),
-//				@ApiResponse(
-//					responseCode = "400",
-//					description = "Invalid request parameters",
-//					content = @Content(
-//						mediaType = "application/json")),
-//				@ApiResponse(
-//					responseCode = "404",
-//					description = "Unable to update table with the information given",
-//					content = @Content(
-//						mediaType = "application/json")),
-//				@ApiResponse(
-//					responseCode = "500",
-//					description = "An unplanned error has occurred.",
-//					content = @Content(
-//						mediaType = "application/json"))
-//			},
-//				
-//			parameters = {
-//				@Parameter(
-//					name = "sceneNumber",
-//					allowEmptyValue = false,
-//					required = true,
-//					description = "Scene Number")
-//			}
-//		)
-//			
-//		@PutMapping
-//		@ResponseStatus(code = HttpStatus.OK)
-//		Optional<ScenePart> populateFK(
-//			@RequestParam(required = true)
-//			Integer sceneNumber);
-//		// @formatter:on
-		
+	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
+	Optional<ScenePart> enterScenePartInfo(
+		@RequestParam(required = true)
+		Integer sceneNumber,
+		@RequestParam(required = true)
+		Integer partNumber,
+		@RequestParam(required = true)
+		String musicalName);
+		// @formatter:on	
 }
 
 

@@ -25,20 +25,6 @@ public class DefaultScenePartController implements ScenePartController {
 		log.info("sceneNumber={}, partNumber={}, musicalName={}", sceneNumber, partNumber, musicalName);
 		return scenePartService.enterScenePartInfo(sceneNumber, partNumber, musicalName);
 	}
-	
-	//not needed after database refactor, saved in case I want to go back to the old format
-	
-//	@Autowired
-//	private ScenePartService scenePartService;
-//
-//	//UPDATE operation, update castId column from castmember
-//	@Override
-//	public Optional<ScenePart> populateFK(Integer sceneNumber) {
-//		log.info("sceneNumber={}, castmemberId={}", sceneNumber);
-//		return scenePartService.populateFK(sceneNumber);
-//		}
-//	
-	
 }
 
 

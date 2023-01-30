@@ -159,7 +159,6 @@ public class DefaultSceneDao implements SceneDao {
 			}
 		});
 	}
-	
 
 	//POST create a new scene
 	@Override

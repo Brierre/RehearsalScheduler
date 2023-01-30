@@ -17,7 +17,4 @@ public interface ScenePartDao {
 	
 	Optional<ScenePart> enterScenePartInfo(Integer sceneNumber, Integer partNumber, String musicalName);
 
-	
-	//not needed after database refactor, saved in case I want to go back to the old format
-//	public Optional<ScenePart> populateFK(Integer sceneNumber);
 }

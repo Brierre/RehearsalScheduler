@@ -20,7 +20,6 @@ public class DefaultPartController implements PartController {
 	private PartService partService;
 	
 	//GET operation, read/retrieve parts
-	
 	@Override
 	public List<Part> fetchPartsByMusical(String musicalName) {
 		log.info("musicalName={}", musicalName);
@@ -39,6 +38,7 @@ public class DefaultPartController implements PartController {
 		return partService.fetchPartsByCastmemberInfo(castmemberId, firstName, lastName);
 	}
 	
+	//PUT operation, update part with castmember information
 	@Override
 	public Optional<Part> linkCastmemberToPart(String musicalName, String characterName, String firstName, String lastName) {
 		log.info("musicalName={}, characterName={}, firstName={}, lastName={}", musicalName, characterName, firstName, lastName);

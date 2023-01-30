@@ -23,7 +23,6 @@ public class DefaultCastMemberDao implements CastMemberDao {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
-	
 	@Override
 	public List<CastMember> fetchCastMember(Integer castmemberId, String firstName, String lastName) {
 		log.info("DAO: castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
@@ -57,7 +56,6 @@ public class DefaultCastMemberDao implements CastMemberDao {
 			}
 		});
 	}
-
 	
 	@Override
 	public List<CastMember> fetchCastMemberByMusical(String musicalName) {
@@ -131,7 +129,6 @@ public class DefaultCastMemberDao implements CastMemberDao {
 		});
 	}
 	
-	
 	@Override
 	public Optional<CastMember> newCastMember(String firstName, String lastName, String phoneNumber,
 			Boolean tapPerformer, Boolean costumeComplete) {
@@ -164,7 +161,6 @@ public class DefaultCastMemberDao implements CastMemberDao {
 			// @formatter:on
 		}
 	
-
 	@Override
 	public Optional<CastMember> updateCastMember(String firstName, String lastName, String newFirstName, String newLastName,
 			String phoneNumber, Boolean tapPerformer, Boolean costumeComplete) {
@@ -200,9 +196,7 @@ public class DefaultCastMemberDao implements CastMemberDao {
 			.build());
 			// @formatter:on
 	}
-//How to NOT overwrite information with null values not updated?
-	
-//How to identify duplicates (cast members with same name) and prevent the wrong one from being deleted
+
 	@Override
 	public Optional<CastMember> deleteCastMember(String firstName, String lastName, String phoneNumber) {
 		//@ formatter:off
@@ -228,7 +222,6 @@ public class DefaultCastMemberDao implements CastMemberDao {
 			.build());
 			// @formatter:on
 	}
-	
 	
 }
 

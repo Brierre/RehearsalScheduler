@@ -1,5 +1,6 @@
 package com.msaunthaigh.rehearsalscheduler.entity;
 
+//not implemented at this time
 //Enum class that will allow user to select a musical from the list (drop-down). User will then be working with ONLY data related to that list
 
 public enum Musical {

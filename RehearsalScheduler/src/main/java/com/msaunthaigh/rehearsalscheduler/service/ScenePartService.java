@@ -16,7 +16,4 @@ public interface ScenePartService {
 	
 	Optional<ScenePart> enterScenePartInfo(Integer sceneNumber, Integer partNumber, String musicalName);
 	
-	
-	//not needed after database refactor, saved in case I want to go back to the old format
-//	Optional<ScenePart> populateFK(Integer sceneNumber);
 }

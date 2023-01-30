@@ -9,10 +9,9 @@ public interface SceneDao {
 	/**
 	 * 
 	 * @param musicalName
-	 * @param sceneName
-	 * @param songTitle
 	 * @return
 	 */
+	
 	List<Scene> fetchScenesByMusical(String musicalName);
 	
 	/**

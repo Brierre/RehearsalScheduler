@@ -49,32 +49,4 @@ public class DefaultScenePartDao implements ScenePartDao {
 				// @formatter:on
 			}
 
-	//not needed after database refactor, saved in case I want to go back to the old format	
-	
-//	@Autowired
-//	private NamedParameterJdbcTemplate jdbcTemplate;
-//	
-//	@Override
-//	public Optional<ScenePart> populateFK(Integer sceneNumber) {
-//		log.info("DAO: sceneNumber={}", sceneNumber);
-//		
-//		// @formatter:off
-//		String sql = ""
-//				+ "UPDATE scene_part "
-//				+ "SET castmember_id = 1000 "
-//				+ "WHERE scene_number = :scene_number AND castmember_id IS NULL";
-//
-//		// @formatter:on
-//		
-//		Map<String, Object> params = new HashMap<>();
-//		params.put("scene_number", sceneNumber);
-//		
-//		jdbcTemplate.update(sql, params);
-//		return Optional.ofNullable(ScenePart.builder()
-//			// @formatter:off
-//			.sceneNumber(sceneNumber)
-//			.build());
-//			// @formatter:on
-//	}
-
 }

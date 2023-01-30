@@ -26,7 +26,6 @@ public class DefaultPartService implements PartService {
 		return partDao.fetchPartsByMusical(musicalName);
 	}
 	
-	@Transactional
 	@Override
 	public List<Part> fetchPartsByScene(String musicalName, Integer sceneNumber) {
 		log.info("fetchPart has been called: musicalName={}, sceneNumber={}", musicalName, sceneNumber);
@@ -34,7 +33,6 @@ public class DefaultPartService implements PartService {
 		return partDao.fetchPartsByScene(musicalName, sceneNumber);
 	}
 	
-	@Transactional
 	@Override
 	public List<Part> fetchPartsByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
 		log.info("fetchPart has been called: partNumber={}, castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
@@ -42,7 +40,6 @@ public class DefaultPartService implements PartService {
 		return partDao.fetchPartsByCastmemberInfo(castmemberId, firstName, lastName);
 	}
 	
-	@Transactional
 	@Override
 	public Optional<Part> linkCastmemberToPart(String musicalName, String characterName, String firstName, String lastName) {
 		log.info("linkCastmemberToPart has been called: musicalName={}, characterName={}, firstName={}, lastName={}", musicalName, characterName, firstName, lastName);

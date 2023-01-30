@@ -25,14 +25,5 @@ public class DefaultScenePartService implements ScenePartService {
 		log.info("enterScenePartInfo has been called for sceneNumber={}, partNumber={}, musicalName={}", sceneNumber, partNumber, musicalName);
 		return scenePartDao.enterScenePartInfo(sceneNumber, partNumber, musicalName);
 	}
-	
-	//not needed after database refactor, saved in case I want to go back to the old format
-//	@Autowired
-//	private ScenePartDao scenePartDao;
-//	
-//	public Optional<ScenePart> populateFK(Integer sceneNumber) {
-//		log.info("populateFK has been called for sceneNumber={}", sceneNumber);
-//		return scenePartDao.populateFK(sceneNumber);
-//	}
 
 }

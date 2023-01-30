@@ -6,13 +6,13 @@ import java.util.Optional;
 import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
 
 public interface CastMemberDao {
-/**
- * 
- * @param castmemberId
- * @param firstName
- * @param lastName
- * @return
- */
+	/**
+	 * 
+	 * @param castmemberId
+	 * @param firstName
+	 * @param lastName
+	 * @return
+	 */
 
 	List<CastMember> fetchCastMember(Integer castmemberId, String firstName, String lastName);
 	
@@ -32,16 +32,15 @@ public interface CastMemberDao {
 	
 	List<CastMember> fetchCastMemberByPart(String characterName);
 	
-/**
- * 
- * @param firstName
- * @param lastName
- * @param characterName
- * @param phoneNumber
- * @param tapPerformer
- * @param costumeComplete
- * @return
- */
+	/**
+	 * 
+	 * @param firstName
+	 * @param lastName
+	 * @param phoneNumber
+	 * @param tapPerformer
+	 * @param costumeComplete
+	 * @return
+	 */
 
 	Optional<CastMember> newCastMember(String firstName, String lastName, String phoneNumber,
 		Boolean tapPerformer, Boolean costumeComplete);

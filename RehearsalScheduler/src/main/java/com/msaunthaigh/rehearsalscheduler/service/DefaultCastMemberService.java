@@ -19,6 +19,7 @@ public class DefaultCastMemberService implements CastMemberService {
 	@Autowired
 	private CastMemberDao castMemberDao;
 	
+	//GET/READ operation, read/retrieve cast members
 	@Transactional
 	@Override
 	public List<CastMember> fetchCastMember(Integer castmemberId, String firstName, String lastName) {
@@ -26,16 +27,12 @@ public class DefaultCastMemberService implements CastMemberService {
 		return castMemberDao.fetchCastMember(castmemberId, firstName, lastName);
 	}
 	
-	
-	//GET/READ operation, read/retrieve cast members
 	@Override
 	public List<CastMember> fetchCastMemberByMusical(String musicalName) {
 		log.info("musicalName={}", musicalName);
 		return castMemberDao.fetchCastMemberByMusical(musicalName);
 	}
 	
-	
-	//GET/READ operation, read/retrieve cast members
 	@Override
 	public List<CastMember> fetchCastMemberByPart(String characterName) {
 		log.info("characterName={}", characterName);

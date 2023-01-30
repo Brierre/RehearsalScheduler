@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.msaunthaigh.rehearsalscheduler.entity.Scene;
 
 public interface SceneService {
+	
 	/**
 	 * 
 	 * @param musicalName

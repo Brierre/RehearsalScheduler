@@ -173,7 +173,7 @@ public interface CastMemberController {
 				name = "characterName",
 				allowEmptyValue = false,
 				required = false,
-				description = "Name of Character"),
+				description = "Name of Character")
 		}
 	)
 	
@@ -262,7 +262,7 @@ public interface CastMemberController {
 //updateCastMember()
 	// @formatter:off
 	@Operation(
-		summary = "Update cast member",
+		summary = "Updates a cast member",
 		description = "Updates a cast member's information",
 		responses = {
 			@ApiResponse(
@@ -350,7 +350,7 @@ public interface CastMemberController {
 //deleteCastMember()
 	// @formatter:off	
 	@Operation(
-		summary = "Delete cast member",
+		summary = "Deletes a cast member",
 		description = "Deletes a cast member from the cast list",
 		responses = {
 			@ApiResponse(

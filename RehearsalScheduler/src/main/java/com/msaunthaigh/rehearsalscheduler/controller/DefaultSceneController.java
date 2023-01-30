@@ -25,14 +25,12 @@ public class DefaultSceneController implements SceneController {
 		return sceneService.fetchScenesByMusical(musicalName);
 	}
 	
-	//GET operation, read/retrieve scenes
 	@Override
 	public List<Scene> fetchScenesByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
 		log.info("castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
 		return sceneService.fetchScenesByCastmemberInfo(castmemberId, firstName, lastName);
 	}
 	
-	//GET operation, read/retrieve scenes
 	@Override
 	public List<Scene> fetchScenesByPart(String characterName, String musicalName) {
 		log.info("characterName={}, musicalName={}", characterName, musicalName);
@@ -40,7 +38,7 @@ public class DefaultSceneController implements SceneController {
 	}
 	
 	
-	//POST operation, add scenes
+	//POST operation, add scene
 	@Override
 	public Optional<Scene> addNewScene(String musicalName, Integer sceneNumber, String sceneName, String songTitle, Integer songId, String act, String location, 
 			Integer pageBegin, Integer pageEnd) {

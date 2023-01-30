@@ -43,7 +43,6 @@ public class DefaultSceneService implements SceneService {
 	
 	}
 	
-
 	@Override
 	public Optional<Scene> addNewScene(String musicalName, Integer sceneNumber, String sceneName, String songTitle, Integer songId, String act,
 			String location, Integer pageBegin, Integer pageEnd) {
