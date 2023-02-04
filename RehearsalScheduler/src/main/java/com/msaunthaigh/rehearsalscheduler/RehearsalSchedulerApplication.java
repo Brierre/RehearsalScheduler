@@ -1,5 +1,8 @@
 package com.msaunthaigh.rehearsalscheduler;
 
+//to run on OpenAPI/Swagger:
+//http://localhost:8080/swagger-ui/index.html#/default-part-controller/fetchPartsByScene
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

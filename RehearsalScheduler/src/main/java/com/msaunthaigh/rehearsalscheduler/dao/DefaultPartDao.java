@@ -8,15 +8,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
-//import org.springframework.dao.DataAccessException;
-//import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
 import com.msaunthaigh.rehearsalscheduler.entity.Part;
 
 import lombok.extern.slf4j.Slf4j;

@@ -12,9 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
 import com.msaunthaigh.rehearsalscheduler.entity.Scene;
-import com.msaunthaigh.rehearsalscheduler.entity.ScenePart;
 
 import lombok.extern.slf4j.Slf4j;
 

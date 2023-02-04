@@ -1,13 +1,10 @@
 package com.msaunthaigh.rehearsalscheduler.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.msaunthaigh.rehearsalscheduler.entity.CastMember;
 import com.msaunthaigh.rehearsalscheduler.entity.ScenePart;
 import com.msaunthaigh.rehearsalscheduler.service.ScenePartService;
 

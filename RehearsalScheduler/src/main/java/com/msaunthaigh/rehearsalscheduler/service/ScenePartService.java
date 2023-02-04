@@ -1,6 +1,5 @@
 package com.msaunthaigh.rehearsalscheduler.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.msaunthaigh.rehearsalscheduler.entity.ScenePart;
