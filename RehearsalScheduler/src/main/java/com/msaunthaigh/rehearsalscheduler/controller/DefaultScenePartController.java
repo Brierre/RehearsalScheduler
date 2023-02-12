@@ -17,6 +17,8 @@ public class DefaultScenePartController implements ScenePartController {
 	private ScenePartService scenePartService;
 	
 	//POST/CREATE operation, create an entry in scene_part
+	//Hopefully all scene_part information is included with the database, 
+	//but if a director wants to add parts into a scene, they may do so with this method.
 	@Override
 	public Optional<ScenePart> enterScenePartInfo(Integer sceneNumber, Integer partNumber, String musicalName) {
 		log.info("sceneNumber={}, partNumber={}, musicalName={}", sceneNumber, partNumber, musicalName);

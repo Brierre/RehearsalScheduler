@@ -18,18 +18,21 @@ public class DefaultSceneController implements SceneController {
 	private SceneService sceneService;
 	
 	//GET operation, read/retrieve scenes
+	//Directors can get a list of all scenes in a musical.
 	@Override
 	public List<Scene> fetchScenesByMusical(String musicalName) {
 		log.info("musicalName={}", musicalName);
 		return sceneService.fetchScenesByMusical(musicalName);
 	}
 	
+	//Users/Directors can get a list of all scenes a cast member is in.
 	@Override
 	public List<Scene> fetchScenesByCastmemberInfo(Integer castmemberId, String firstName, String lastName) {
 		log.info("castmemberId={}, firstName={}, lastName={}", castmemberId, firstName, lastName);
 		return sceneService.fetchScenesByCastmemberInfo(castmemberId, firstName, lastName);
 	}
 	
+	//Users/Directors can get a list of all scenes a particular part is in (i.e. "When does Chorus Nun #3 appear in the show?"
 	@Override
 	public List<Scene> fetchScenesByPart(String characterName, String musicalName) {
 		log.info("characterName={}, musicalName={}", characterName, musicalName);
@@ -38,6 +41,7 @@ public class DefaultSceneController implements SceneController {
 	
 	
 	//POST operation, add scene
+	//If the director wants to add a scene to the existing breakdown, they may do so here without breaking anything that already exists.
 	@Override
 	public Optional<Scene> addNewScene(String musicalName, Integer sceneNumber, String sceneName, String songTitle, Integer songId, String act, String location, 
 			Integer pageBegin, Integer pageEnd) {
@@ -47,6 +51,7 @@ public class DefaultSceneController implements SceneController {
 	}
 	
 	//PUT operation, update scene
+	//A Director may update any scene information as needed.
 	@Override
 	public Optional<Scene> updateScene(String musicalName, Integer sceneNumber, String sceneName, String songTitle, Integer songId,
 			String act, String location, Integer pageBegin, Integer pageEnd) {
